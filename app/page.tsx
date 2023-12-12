@@ -1,9 +1,10 @@
-import Image from 'next/image'
+import FruitCycle from "./fruit-cycle" 
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Test</h1>
+      <FruitCycle></FruitCycle>
+
     </main>
   )
 }
