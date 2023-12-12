@@ -63,6 +63,11 @@ export default function FruitCycle() {
                     )
                 })}
             </table>
+
+            <image>
+                {/* add image of the fruit cycle here! */}
+
+            </image>
         </div>
     )
   }
