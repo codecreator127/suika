@@ -32,7 +32,6 @@ const Leaderboard = () => {
                     {leaderboardData.map(item => (
                         <tr key={"leaderboardData"}>
                         <td><img src={item.image} width={20} height={20}></img></td>
-                        <td>{item.rank}</td>
                         <td>{item.score}</td>
                         </tr>
                     ))}
