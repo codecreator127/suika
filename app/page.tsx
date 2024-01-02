@@ -1,4 +1,5 @@
 import Leaderboard from './leaderboard'
+import FruitCycle from './fruit-cycle'
 
 export default function Home() {
   return (
