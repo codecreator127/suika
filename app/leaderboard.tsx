@@ -31,11 +31,11 @@ const Leaderboard = () => {
                 <tbody>
                     {leaderboardData.map(item => (
                         <tr key={"leaderboardData"}>
-                        <td><img src={item.image} width={20} height={20}></img></td>
-                        <td>{item.score}</td>
+                            <td><img src={item.image} width={20} height={20}></img></td>
+                            <td>{item.score}</td>
                         </tr>
                     ))}
-                    </tbody>
+                </tbody>
             </table>
         
         </div>
