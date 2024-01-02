@@ -10,6 +10,7 @@ import PeachImage from '../public/assets/peach.png';
 import PineappleImage from '../public/assets/pineapple.png';
 import MelonImage from '../public/assets/melon.png';
 import WatermelonImage from '../public/assets/watermelon.png';
+import FruitCycleImage from '../public/assets/fruit-cycle.png';
 
 class Fruit {   
     image_url: {src: string};
@@ -57,7 +58,7 @@ export default function FruitCycle() {
             <tr>
               <th>Fruit Image</th>
               <th>Fruit Name</th>
-              <th>Point per fruit</th>
+              <th>Points</th>
             </tr>
           </thead>
           <tbody>
@@ -74,7 +75,7 @@ export default function FruitCycle() {
             })}
           </tbody>
         </table>
-
+        <img src={FruitCycleImage.src} alt="fruit cycle" height={250} width={250}/>
       </div>
     );
   }
