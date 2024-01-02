@@ -1,32 +1,39 @@
-// import './App.css';
+import React from 'react';
+import CherryImage from '../public/assets/cherry.jpg';
+import StrawberryImage from '../public/assets/strawberry.png';
+import GrapeImage from '../public/assets/grapes.png';
+import DekoponImage from '../public/assets/dekopon.png';
+import OrangeImage from '../public/assets/orange.png';
+import AppleImage from '../public/assets/apple.jpg';
+import PearImage from '../public/assets/pear.png';
+import PeachImage from '../public/assets/peach.png';
+import PineappleImage from '../public/assets/pineapple.png';
+import MelonImage from '../public/assets/melon.png';
+import WatermelonImage from '../public/assets/watermelon.png';
 
-
-// Refactor this into a separate file once you can 
-
-class Fruit {
-    image_url: string;
+class Fruit {   
+    image_url: {src: string};
     name: string;
     points: number;
-
-    constructor(image_url: string, name: string, points: number) {
-        this.image_url = image_url;
-        this.name = name;
-        this.points = points;
+  
+    constructor(name: string, points: number, image_url: {src: string}) {
+      this.image_url = image_url;
+      this.name = name;
+      this.points = points;
     }
-}
-
-let Cherries = new Fruit("Image_cherry", "Cherries", 2);
-let Strawberry = new Fruit("image_str", "Strawberry", 4);
-let Grapes = new Fruit("image_str", "Grapes", 6);
-let Dekopon = new Fruit("image_str", "Dekopon", 8);
-let Orange = new Fruit("image_str", "Orange", 10);
-let Apple = new Fruit("image_str", "Apple", 12);
-let Pear = new Fruit("image_str", "Pear", 14);
-let Peach = new Fruit("image_str", "Peach", 16);
-let Pineapple = new Fruit("image_str", "Pineapple", 18);
-let Melon = new Fruit("image_str", "Melon", 20);
-let Watermelon = new Fruit("image_str", "Watermelon", 22);
-
+  }
+  
+  const Cherries = new Fruit("Cherries", 2, CherryImage);
+  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage);
+  const Grapes = new Fruit("Grapes", 6, GrapeImage);
+  const Dekopon = new Fruit("Dekopon", 8, DekoponImage);
+  const Orange = new Fruit("Orange", 10, OrangeImage);
+  const Apple = new Fruit("Apple", 12, AppleImage);
+  const Pear = new Fruit("Pear", 14, PearImage);
+  const Peach = new Fruit("Peach", 16, PeachImage);
+  const Pineapple = new Fruit("Pineapple", 18, PineappleImage);
+  const Melon = new Fruit("Melon", 20, MelonImage);
+  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage);
 
 const Fruit_Data = [
     Cherries,
@@ -40,34 +47,34 @@ const Fruit_Data = [
     Pineapple,
     Melon,
     Watermelon,
-    
 ]
 
 export default function FruitCycle() {
     return (
-        <div>
-            <table>
-                <tr>
-                    <th>Fruit Image</th>
-                    <th>Fruit Name</th>
-                    <th>Point per fruit</th>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>Fruit Image</th>
+              <th>Fruit Name</th>
+              <th>Point per fruit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Fruit_Data.map((val, key) => {
+              return (
+                <tr key={key}>
+                  <td>
+                    <img src={val.image_url.src} alt="Fruit image" height={30} width={30}/>
+                  </td>
+                  <td>{val.name}</td>
+                  <td>{val.points}</td>
                 </tr>
-                {Fruit_Data.map((val, key) => {
-                    return (
-                        <tr key={key}>
-                            {/* Replace the td of image_url to images once we have assets */}
-                            <td>{val.image_url}</td> 
-                            <td>{val.name}</td>
-                            <td>{val.points}</td>
-                        </tr>
-                    )
-                })}
-            </table>
+              );
+            })}
+          </tbody>
+        </table>
 
-            <image>
-                {/* add image of the fruit cycle here! */}
-
-            </image>
-        </div>
-    )
+      </div>
+    );
   }
