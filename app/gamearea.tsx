@@ -36,6 +36,7 @@ class Fruit {
     }
   }
   
+  const WatermelonRadius = 120;
   const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 1);
   const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 2);
   const Grapes = new Fruit("Grapes", 6, GrapeImage, 40, 3);
@@ -46,7 +47,7 @@ class Fruit {
   const Peach = new Fruit("Peach", 16, PeachImage, 80, 8);
   const Pineapple = new Fruit("Pineapple", 18, PineappleImage, 88, 9);
   const Melon = new Fruit("Melon", 20, MelonImage, 92, 10);
-  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, 100, 11);
+  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, WatermelonRadius, 11);
 
 let Fruit_Data = [
     Cherries,
@@ -204,15 +205,20 @@ const GameArea = () => {
       // Handle mouse click event here
       console.log('Mouse clicked at:', event.mouse.position);
 
-      addFruit(event.mouse.position.x, event.mouse.position.y, -1)
+      addFruit(event.mouse.position.x, event.mouse.position.y, 10)
 
       
     });
 
     // collisions
-
     Matter.Events.on(engine, "collisionStart", (event) => {
       event.pairs.forEach((collision) => {
+
+        // remove from world if watermelon
+        if (collision.bodyA.circleRadius == collision.bodyB.circleRadius && collision.bodyA.circleRadius == WatermelonRadius) {
+          Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
+        }
+
         if (collision.bodyA.circleRadius == collision.bodyB.circleRadius) {
           
           let index = 1;
