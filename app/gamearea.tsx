@@ -38,17 +38,17 @@ class Fruit {
   
   const FruitSpawnHeight = 150;
   const WatermelonRadius = 120;
-  const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 1);
-  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 2);
-  const Grapes = new Fruit("Grapes", 6, GrapeImage, 40, 3);
-  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, 50, 4);
-  const Orange = new Fruit("Orange", 10, OrangeImage, 55, 5);
-  const Apple = new Fruit("Apple", 12, AppleImage, 70, 6);
-  const Pear = new Fruit("Pear", 14, PearImage, 77, 7);
-  const Peach = new Fruit("Peach", 16, PeachImage, 80, 8);
-  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, 88, 9);
-  const Melon = new Fruit("Melon", 20, MelonImage, 92, 10);
-  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, WatermelonRadius, 11);
+  const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 0);
+  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 1);
+  const Grapes = new Fruit("Grapes", 6, GrapeImage, 40, 2);
+  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, 50, 3);
+  const Orange = new Fruit("Orange", 10, OrangeImage, 55, 4);
+  const Apple = new Fruit("Apple", 12, AppleImage, 70, 5);
+  const Pear = new Fruit("Pear", 14, PearImage, 77, 6);
+  const Peach = new Fruit("Peach", 16, PeachImage, 80, 7);
+  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, 88, 8);
+  const Melon = new Fruit("Melon", 20, MelonImage, 92, 9);
+  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, WatermelonRadius, 10);
 
 let Fruit_Data = [
     Cherries,
