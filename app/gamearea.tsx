@@ -38,17 +38,17 @@ class Fruit {
   }
   
   const FruitSpawnHeight = 150;
-  const WatermelonRadius = 120;
-  const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 0);
-  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 1);
-  const Grapes = new Fruit("Grapes", 6, GrapeImage, 40, 2);
-  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, 50, 3);
-  const Orange = new Fruit("Orange", 10, OrangeImage, 55, 4);
-  const Apple = new Fruit("Apple", 12, AppleImage, 70, 5);
-  const Pear = new Fruit("Pear", 14, PearImage, 77, 6);
-  const Peach = new Fruit("Peach", 16, PeachImage, 80, 7);
-  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, 88, 8);
-  const Melon = new Fruit("Melon", 20, MelonImage, 92, 9);
+  const WatermelonRadius = WatermelonImage.height/4;
+  const Cherries = new Fruit("Cherry", 2, CherryImage, CherryImage.width/4, 0);
+  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, StrawberryImage.width/4, 1);
+  const Grapes = new Fruit("Grapes", 6, GrapeImage, GrapeImage.width/4, 2);
+  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, DekoponImage.width/4, 3);
+  const Orange = new Fruit("Orange", 10, OrangeImage, OrangeImage.width/4, 4);
+  const Apple = new Fruit("Apple", 12, AppleImage, AppleImage.width/4, 5);
+  const Pear = new Fruit("Pear", 14, PearImage, PearImage.width/4, 6);
+  const Peach = new Fruit("Peach", 16, PeachImage, PeachImage.width/4, 7);
+  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, PineappleImage.width/4, 8);
+  const Melon = new Fruit("Melon", 20, MelonImage, MelonImage.width/4, 9);
   const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, WatermelonRadius, 10);
 
 let Fruit_Data = [
@@ -154,8 +154,8 @@ const GameArea = () => {
         },
         render: {
           sprite: {
-            xScale: 1,
-            yScale: 1,
+            xScale: 0.5,
+            yScale: 0.5,
             texture: fruit.image_url.src // set texture here
           }
         }
