@@ -1,7 +1,7 @@
 'use client'
 // components/MatterComponent.js
 import React, { useEffect } from 'react';
-import Matter from 'matter-js';
+import Matter, { World } from 'matter-js';
 
 // import Fruit_Data from './fruit-base';
 
@@ -25,26 +25,28 @@ class Fruit {
     name: string;
     points: number;
     radius: number;
+    index: any;
   
-    constructor(name: string, points: number, image_url: {src: string}, radius: number) {
+    constructor(name: string, points: number, image_url: {src: string}, radius: number, index: number) {
       this.image_url = image_url;
       this.name = name;
       this.points = points;
       this.radius = radius;
+      this.index = index;
     }
   }
   
-  const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5);
-  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30);
-  const Grapes = new Fruit("Grapes", 6, GrapeImage, 40);
-  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, 50);
-  const Orange = new Fruit("Orange", 10, OrangeImage, 55);
-  const Apple = new Fruit("Apple", 12, AppleImage, 70);
-  const Pear = new Fruit("Pear", 14, PearImage, 77);
-  const Peach = new Fruit("Peach", 16, PeachImage, 80);
-  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, 88);
-  const Melon = new Fruit("Melon", 20, MelonImage, 92);
-  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, 100);
+  const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 1);
+  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 2);
+  const Grapes = new Fruit("Grapes", 6, GrapeImage, 40, 3);
+  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, 50, 4);
+  const Orange = new Fruit("Orange", 10, OrangeImage, 55, 5);
+  const Apple = new Fruit("Apple", 12, AppleImage, 70, 6);
+  const Pear = new Fruit("Pear", 14, PearImage, 77, 7);
+  const Peach = new Fruit("Peach", 16, PeachImage, 80, 8);
+  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, 88, 9);
+  const Melon = new Fruit("Melon", 20, MelonImage, 92, 10);
+  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, 100, 11);
 
 let Fruit_Data = [
     Cherries,
@@ -136,11 +138,14 @@ const GameArea = () => {
       img.src = url;
     };
     
-    // chance of bigger fruit spawning
-    let fruit_multiplier = 5;
+    // chance of bigger fruit spawning, change to correlate to score later
+    let fruit_multiplier = 1;
 
-    function addFruit(x:number, y: number) {
-      const fruitIndex = Math.floor(Math.random() * fruit_multiplier)
+    function addFruit(x:number, y: number, fruit_index: number) {
+      let fruitIndex = Math.floor(Math.random() * fruit_multiplier)
+      if (fruit_index != -1) {
+        fruitIndex = fruit_index
+      }
 
       // import image
       const fruit = Fruit_Data[fruitIndex];
@@ -151,6 +156,7 @@ const GameArea = () => {
         // frictionAir: 0.06,
         // restitution: 0.3,
         // friction: 0.01,
+        // index = fruit.index,
         render: {
           sprite: {
             xScale: 1,
@@ -174,7 +180,7 @@ const GameArea = () => {
       currentFruit = fruit;
     }
 
-    addFruit(300, 300);
+    addFruit(300, 300, -1);
 
     // click to add fruit
     const mouse = Matter.Mouse.create(render.canvas);
@@ -198,10 +204,36 @@ const GameArea = () => {
       // Handle mouse click event here
       console.log('Mouse clicked at:', event.mouse.position);
 
-      addFruit(event.mouse.position.x, event.mouse.position.y)
+      addFruit(event.mouse.position.x, event.mouse.position.y, -1)
 
       
     });
+
+    // collisions
+
+    Matter.Events.on(engine, "collisionStart", (event) => {
+      event.pairs.forEach((collision) => {
+        if (collision.bodyA.circleRadius == collision.bodyB.circleRadius) {
+          
+          let index = 1;
+
+          // going to use a dictionary for now to map radius to fruit, probably a better way, but unsure for now
+          console.log(collision.bodyA.circleRadius);
+          for (let i = 0; i < Fruit_Data.length; i ++) {
+            if (collision.bodyA.circleRadius == Fruit_Data[i].radius) {
+              index = i;
+            }
+          } 
+
+          Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
+          let newFruitIndex = index + 1;
+          // console.log(collision.bodyA.position.x);
+
+          addFruit(collision.bodyA.position.x, collision.bodyA.position.y, newFruitIndex);
+        }
+
+      })
+    })
 
     // Start the physics engine
     Matter.Runner.run(runner, engine);
