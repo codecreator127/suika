@@ -1,6 +1,6 @@
 'use client'
 // components/MatterComponent.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Matter, { World } from 'matter-js';
 
 // import Fruit_Data from './fruit-base';
@@ -17,6 +17,7 @@ import PineappleImage from '../public/assets/pineapple.png';
 import MelonImage from '../public/assets/melon.png';
 import WatermelonImage from '../public/assets/watermelon.png';
 import { Yellowtail } from 'next/font/google';
+import { setServers } from 'dns';
 
 
 
@@ -36,7 +37,6 @@ class Fruit {
     }
   }
   
-  let score = 0;
   const FruitSpawnHeight = 150;
   const WatermelonRadius = 120;
   const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 0);
@@ -67,7 +67,9 @@ let Fruit_Data = [
 
 
 const GameArea = () => {
+  const score = useRef(0);
   useEffect(() => {
+    
     // initial set up
     const engine = Matter.Engine.create();
 
@@ -226,11 +228,11 @@ const GameArea = () => {
 
           Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
           let newFruitIndex = index + 1;
-          score += Fruit_Data[index].points;
-          if (score >= 4) {
+          score.current += Fruit_Data[index].points;
+          if (score.current >= 4) {
             fruit_multiplier = 3;
           }
-          if (score >= 12) {
+          if (score.current >= 12) {
             fruit_multiplier = 5;
           }
 
@@ -252,9 +254,20 @@ const GameArea = () => {
       Matter.World.clear(engine.world, true);
       Matter.Engine.clear(engine);
     };
-  }, []);
+  }, [score]);
 
-  return <div id="game-area" style={{ width: '100%', height: '20vh' }} />;
+  return (
+    <div id="game-container" style={{ position: 'relative', width: '100%', height: '20vh' }}>
+      {/* The game area canvas */}
+      <div id="game-area" style={{ position: 'absolute', width: '100%', height: '100%' }} />
+
+      {/* Score - leaving this out for now, updating score causes rerendering issues */}
+      {/* <div style={{ position: 'absolute', top: '0%', left: '10%', transform: 'translate(-50%, -50%)'}}>
+        <p>Score: {score.current}</p>
+      </div> */}
+    </div>
+  );
 };
+
 
 export default GameArea;
