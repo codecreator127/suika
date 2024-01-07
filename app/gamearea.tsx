@@ -36,6 +36,7 @@ class Fruit {
     }
   }
   
+  const FruitSpawnHeight = 150;
   const WatermelonRadius = 120;
   const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 1);
   const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 2);
@@ -158,6 +159,10 @@ const GameArea = () => {
         // restitution: 0.3,
         // friction: 0.01,
         // index = fruit.index,
+        collisionFilter: {
+          category: 0x0001,
+          mask: 0x0001,
+        },
         render: {
           sprite: {
             xScale: 1,
@@ -181,13 +186,16 @@ const GameArea = () => {
       currentFruit = fruit;
     }
 
-    addFruit(300, 300, -1);
+    addFruit(300, FruitSpawnHeight, -1);
 
     // click to add fruit
     const mouse = Matter.Mouse.create(render.canvas);
 
     // Create a mouse constraint
     const mouseConstraint = Matter.MouseConstraint.create(engine, {
+      collisionFilter: {
+        category: 0x0002,
+      },
       mouse: mouse,
       constraint: {
         stiffness: 0.2,
@@ -205,7 +213,7 @@ const GameArea = () => {
       // Handle mouse click event here
       console.log('Mouse clicked at:', event.mouse.position);
 
-      addFruit(event.mouse.position.x, event.mouse.position.y, 10)
+      addFruit(event.mouse.position.x, FruitSpawnHeight, -1)
 
       
     });
