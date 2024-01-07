@@ -36,6 +36,7 @@ class Fruit {
     }
   }
   
+  let score = 0;
   const FruitSpawnHeight = 150;
   const WatermelonRadius = 120;
   const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 0);
@@ -67,7 +68,6 @@ let Fruit_Data = [
 
 const GameArea = () => {
   useEffect(() => {
-    console.log('rendered');
     // initial set up
     const engine = Matter.Engine.create();
 
@@ -101,12 +101,6 @@ const GameArea = () => {
     Matter.World.add(engine.world, [leftWall, rightWall, topLine, ground]);
 
 
-    // test fruit spawn
-    // import image
-    const fruit = Fruit_Data[1];
-    // console.log(fruit);
-
-
     // Render the engine
     const render = Matter.Render.create({
       element: document.getElementById('game-area'), // Use an element with the ID 'game-area'
@@ -120,13 +114,6 @@ const GameArea = () => {
     });
 
     Matter.Render.run(render);
-
-    let currentBody = null;
-    let currentFruit = null;
-    let disableAction = false;
-    let interval = null;
-    let suika_score = 0;
-    let gameOver = false;
 
     const runner = Matter.Runner.create();
 
@@ -182,8 +169,6 @@ const GameArea = () => {
           console.log("Error  Loading ");
         }
       );
-      currentBody = game_fruit;
-      currentFruit = fruit;
     }
 
     addFruit(300, FruitSpawnHeight, -1);
@@ -237,10 +222,19 @@ const GameArea = () => {
             if (collision.bodyA.circleRadius == Fruit_Data[i].radius) {
               index = i;
             }
-          } 
+          }
 
           Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
           let newFruitIndex = index + 1;
+          score += Fruit_Data[index].points;
+          if (score >= 4) {
+            fruit_multiplier = 3;
+          }
+          if (score >= 12) {
+            fruit_multiplier = 5;
+          }
+
+          console.log(score);
           // console.log(collision.bodyA.position.x);
 
           addFruit(collision.bodyA.position.x, collision.bodyA.position.y, newFruitIndex);
