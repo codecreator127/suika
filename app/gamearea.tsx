@@ -1,6 +1,6 @@
 'use client'
 // components/MatterComponent.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Matter, { World } from 'matter-js';
 
 // import Fruit_Data from './fruit-base';
@@ -17,6 +17,7 @@ import PineappleImage from '../public/assets/pineapple.png';
 import MelonImage from '../public/assets/melon.png';
 import WatermelonImage from '../public/assets/watermelon.png';
 import { Yellowtail } from 'next/font/google';
+import { setServers } from 'dns';
 
 
 
@@ -66,8 +67,9 @@ let Fruit_Data = [
 
 
 const GameArea = () => {
+  const score = useRef(0);
   useEffect(() => {
-    console.log('rendered');
+    
     // initial set up
     const engine = Matter.Engine.create();
 
@@ -101,12 +103,6 @@ const GameArea = () => {
     Matter.World.add(engine.world, [leftWall, rightWall, topLine, ground]);
 
 
-    // test fruit spawn
-    // import image
-    const fruit = Fruit_Data[1];
-    // console.log(fruit);
-
-
     // Render the engine
     const render = Matter.Render.create({
       element: document.getElementById('game-area'), // Use an element with the ID 'game-area'
@@ -120,13 +116,6 @@ const GameArea = () => {
     });
 
     Matter.Render.run(render);
-
-    let currentBody = null;
-    let currentFruit = null;
-    let disableAction = false;
-    let interval = null;
-    let suika_score = 0;
-    let gameOver = false;
 
     const runner = Matter.Runner.create();
 
@@ -182,8 +171,6 @@ const GameArea = () => {
           console.log("Error  Loading ");
         }
       );
-      currentBody = game_fruit;
-      currentFruit = fruit;
     }
 
     addFruit(300, FruitSpawnHeight, -1);
@@ -237,10 +224,19 @@ const GameArea = () => {
             if (collision.bodyA.circleRadius == Fruit_Data[i].radius) {
               index = i;
             }
-          } 
+          }
 
           Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
           let newFruitIndex = index + 1;
+          score.current += Fruit_Data[index].points;
+          if (score.current >= 4) {
+            fruit_multiplier = 3;
+          }
+          if (score.current >= 12) {
+            fruit_multiplier = 5;
+          }
+
+          console.log(score);
           // console.log(collision.bodyA.position.x);
 
           addFruit(collision.bodyA.position.x, collision.bodyA.position.y, newFruitIndex);
@@ -258,9 +254,20 @@ const GameArea = () => {
       Matter.World.clear(engine.world, true);
       Matter.Engine.clear(engine);
     };
-  }, []);
+  }, [score]);
 
-  return <div id="game-area" style={{ width: '100%', height: '20vh' }} />;
+  return (
+    <div id="game-container" style={{ position: 'relative', width: '100%', height: '20vh' }}>
+      {/* The game area canvas */}
+      <div id="game-area" style={{ position: 'absolute', width: '100%', height: '100%' }} />
+
+      {/* Score - leaving this out for now, updating score causes rerendering issues */}
+      {/* <div style={{ position: 'absolute', top: '0%', left: '10%', transform: 'translate(-50%, -50%)'}}>
+        <p>Score: {score.current}</p>
+      </div> */}
+    </div>
+  );
 };
+
 
 export default GameArea;
