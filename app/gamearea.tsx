@@ -36,7 +36,7 @@ class Fruit {
     }
   }
   
-  const FruitSpawnHeight = 150;
+  const FruitSpawnHeight = 130;
   const WatermelonRadius = 120;
   const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 1);
   const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 2);
@@ -82,10 +82,10 @@ const GameArea = () => {
       render: {fillStyle: "#E6B143"}
     });
   
-    const topLine = Matter.Bodies.rectangle(310, 150, 620, 2,{
+    const topLine = Matter.Bodies.rectangle(310, 50, 620, 2,{
       // name: "topLine",
       isStatic: true,
-  
+
       // A line to check if the fruits are overflowing or not.
       isSensor: true,
       render: {fillStyle: "#E6B143"}
@@ -186,8 +186,6 @@ const GameArea = () => {
       currentFruit = fruit;
     }
 
-    addFruit(300, FruitSpawnHeight, -1);
-
     // click to add fruit
     const mouse = Matter.Mouse.create(render.canvas);
 
@@ -214,7 +212,6 @@ const GameArea = () => {
       console.log('Mouse clicked at:', event.mouse.position);
 
       addFruit(event.mouse.position.x, FruitSpawnHeight, -1)
-
       
     });
 
@@ -225,6 +222,12 @@ const GameArea = () => {
         // remove from world if watermelon
         if (collision.bodyA.circleRadius == collision.bodyB.circleRadius && collision.bodyA.circleRadius == WatermelonRadius) {
           Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
+        }
+
+        // end game if collision with the top sensor
+        if (collision.bodyA.isSensor || collision.bodyB.isSensor) {
+          alert("Game over (Press F5 to Refresh the Page to Restart)");
+
         }
 
         if (collision.bodyA.circleRadius == collision.bodyB.circleRadius) {
