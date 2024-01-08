@@ -49,6 +49,7 @@ class Fruit {
   const Peach = new Fruit("Peach", 16, PeachImage, PeachImage.width/4, 7);
   const Pineapple = new Fruit("Pineapple", 18, PineappleImage, PineappleImage.width/4, 8);
   const Melon = new Fruit("Melon", 20, MelonImage, MelonImage.width/4, 9);
+  const Watermelon = new Fruit("Watermelon", 20, WatermelonImage, WatermelonImage.width/4, 10);
 
 
 let Fruit_Data = [
@@ -213,7 +214,10 @@ const GameArea = () => {
 
         // end game if collision with the top sensor
         if (collision.bodyA.isSensor || collision.bodyB.isSensor) {
-          alert("Game over (Press F5 to Refresh the Page to Restart)");
+          alert("Game over!!!!");
+
+          Matter.World.clear(engine.world, true);
+          Matter.Engine.clear(engine);
 
         }
 

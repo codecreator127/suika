@@ -4,7 +4,7 @@ import GameArea from './gamearea'
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen p-10 justify-center">
+    <main className="flex min-h-screen p-8 justify-center">
       <Leaderboard></Leaderboard>
       <GameArea/>
       <FruitCycle></FruitCycle>
