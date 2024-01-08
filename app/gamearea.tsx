@@ -37,7 +37,7 @@ class Fruit {
     }
   }
   
-  const FruitSpawnHeight = 150;
+  const FruitSpawnHeight = 100;
   const WatermelonRadius = WatermelonImage.height/4;
   const Cherries = new Fruit("Cherry", 2, CherryImage, CherryImage.width/4, 0);
   const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, StrawberryImage.width/4, 1);
@@ -74,17 +74,17 @@ const GameArea = () => {
     const engine = Matter.Engine.create();
 
     // game area walls
-    const leftWall = Matter.Bodies.rectangle(15, 395, 30, 790, {
+    const leftWall = Matter.Bodies.rectangle(0, 395, 30, 790, {
       isStatic: true,
       render: {fillStyle: "#E6B143"}
     });
   
-    const rightWall = Matter.Bodies.rectangle(605, 395, 30, 790, {
+    const rightWall = Matter.Bodies.rectangle(450, 395, 30, 790, {
       isStatic: true,
       render: {fillStyle: "#E6B143"}
     });
   
-    const topLine = Matter.Bodies.rectangle(310, 150, 620, 2,{
+    const topLine = Matter.Bodies.rectangle(310, 50, 620, 2,{
       // name: "topLine",
       isStatic: true,
   
@@ -94,7 +94,7 @@ const GameArea = () => {
   
     });
   
-    const ground = Matter.Bodies.rectangle(310, 820, 620, 60, {
+    const ground = Matter.Bodies.rectangle(310, 600, 620, 30, {
       isStatic: true,
       render: {fillStyle: "#E6B143"}
     });
@@ -110,8 +110,8 @@ const GameArea = () => {
       options: {
         wireframes: false,
         background: "000000",
-        width: 800,
-        height: 800,
+        width: 450,
+        height: 600,
       }
     });
 
@@ -257,9 +257,9 @@ const GameArea = () => {
   }, [score]);
 
   return (
-    <div id="game-container" style={{ position: 'relative', width: '100%', height: '20vh' }}>
+    <div id="game-container">
       {/* The game area canvas */}
-      <div id="game-area" style={{ position: 'absolute', width: '100%', height: '100%' }} />
+      <div id="game-area" />
 
       {/* Score - leaving this out for now, updating score causes rerendering issues */}
       {/* <div style={{ position: 'absolute', top: '0%', left: '10%', transform: 'translate(-50%, -50%)'}}>
