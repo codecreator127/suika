@@ -10,7 +10,6 @@ import PeachImage from '../public/assets/peach.png';
 import PineappleImage from '../public/assets/pineapple.png';
 import MelonImage from '../public/assets/melon.png';
 import WatermelonImage from '../public/assets/watermelon.png';
-import FruitCycleImage from '../public/assets/fruit-cycle.png';
 
 class Fruit {   
     image_url: {src: string};
@@ -52,13 +51,11 @@ const Fruit_Data = [
 
 export default function FruitCycle() {
     return (
-      <div>
-        <table>
+      <div className='px-10'>
+        <table className='text-sm'>
           <thead>
-            <tr>
-              <th>Fruit Image</th>
-              <th>Fruit Name</th>
-              <th>Points</th>
+            <tr className='text-center'>
+              <th>Fruits</th>
             </tr>
           </thead>
           <tbody>
@@ -69,13 +66,12 @@ export default function FruitCycle() {
                     <img src={val.image_url.src} alt="Fruit image" height={30} width={30}/>
                   </td>
                   <td>{val.name}</td>
-                  <td>{val.points}</td>
+                  <td className='px-5'>{val.points}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <img src={FruitCycleImage.src} alt="fruit cycle" height={250} width={250}/>
       </div>
     );
   }

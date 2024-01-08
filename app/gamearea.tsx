@@ -37,19 +37,19 @@ class Fruit {
     }
   }
   
-  const FruitSpawnHeight = 130;
-  const WatermelonRadius = 120;
-  const Cherries = new Fruit("Cherry", 2, CherryImage, 25.5, 0);
-  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, 30, 1);
-  const Grapes = new Fruit("Grapes", 6, GrapeImage, 40, 2);
-  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, 50, 3);
-  const Orange = new Fruit("Orange", 10, OrangeImage, 55, 4);
-  const Apple = new Fruit("Apple", 12, AppleImage, 70, 5);
-  const Pear = new Fruit("Pear", 14, PearImage, 77, 6);
-  const Peach = new Fruit("Peach", 16, PeachImage, 80, 7);
-  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, 88, 8);
-  const Melon = new Fruit("Melon", 20, MelonImage, 92, 9);
-  const Watermelon = new Fruit("Watermelon", 22, WatermelonImage, WatermelonRadius, 10);
+  const FruitSpawnHeight = 100;
+  const WatermelonRadius = WatermelonImage.height/4;
+  const Cherries = new Fruit("Cherry", 2, CherryImage, CherryImage.width/4, 0);
+  const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, StrawberryImage.width/4, 1);
+  const Grapes = new Fruit("Grapes", 6, GrapeImage, GrapeImage.width/4, 2);
+  const Dekopon = new Fruit("Dekopon", 8, DekoponImage, DekoponImage.width/4, 3);
+  const Orange = new Fruit("Orange", 10, OrangeImage, OrangeImage.width/4, 4);
+  const Apple = new Fruit("Apple", 12, AppleImage, AppleImage.width/4, 5);
+  const Pear = new Fruit("Pear", 14, PearImage, PearImage.width/4, 6);
+  const Peach = new Fruit("Peach", 16, PeachImage, PeachImage.width/4, 7);
+  const Pineapple = new Fruit("Pineapple", 18, PineappleImage, PineappleImage.width/4, 8);
+  const Melon = new Fruit("Melon", 20, MelonImage, MelonImage.width/4, 9);
+
 
 let Fruit_Data = [
     Cherries,
@@ -74,12 +74,12 @@ const GameArea = () => {
     const engine = Matter.Engine.create();
 
     // game area walls
-    const leftWall = Matter.Bodies.rectangle(15, 395, 30, 790, {
+    const leftWall = Matter.Bodies.rectangle(0, 395, 30, 790, {
       isStatic: true,
       render: {fillStyle: "#E6B143"}
     });
   
-    const rightWall = Matter.Bodies.rectangle(605, 395, 30, 790, {
+    const rightWall = Matter.Bodies.rectangle(450, 395, 30, 790, {
       isStatic: true,
       render: {fillStyle: "#E6B143"}
     });
@@ -94,7 +94,7 @@ const GameArea = () => {
   
     });
   
-    const ground = Matter.Bodies.rectangle(310, 820, 620, 60, {
+    const ground = Matter.Bodies.rectangle(310, 600, 620, 30, {
       isStatic: true,
       render: {fillStyle: "#E6B143"}
     });
@@ -110,8 +110,8 @@ const GameArea = () => {
       options: {
         wireframes: false,
         background: "000000",
-        width: 800,
-        height: 800,
+        width: 450,
+        height: 600,
       }
     });
 
@@ -154,8 +154,8 @@ const GameArea = () => {
         },
         render: {
           sprite: {
-            xScale: 1,
-            yScale: 1,
+            xScale: 0.5,
+            yScale: 0.5,
             texture: fruit.image_url.src // set texture here
           }
         }
@@ -260,9 +260,9 @@ const GameArea = () => {
   }, [score]);
 
   return (
-    <div id="game-container" style={{ position: 'relative', width: '100%', height: '20vh' }}>
+    <div id="game-container">
       {/* The game area canvas */}
-      <div id="game-area" style={{ position: 'absolute', width: '100%', height: '100%' }} />
+      <div id="game-area" />
 
       {/* Score - leaving this out for now, updating score causes rerendering issues */}
       {/* <div style={{ position: 'absolute', top: '0%', left: '10%', transform: 'translate(-50%, -50%)'}}>
