@@ -149,7 +149,7 @@ const GameArea = () => {
 
     // Render the engine
     const render = Matter.Render.create({
-      element: document.getElementById('game-area'), // Use an element with the ID 'game-area'
+      element: document.getElementById('game-area') || undefined, // Use an element with the ID 'game-area'
       engine: engine,
       options: {
         wireframes: false,
