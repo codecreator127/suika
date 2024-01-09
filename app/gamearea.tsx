@@ -2,6 +2,7 @@
 // components/MatterComponent.js
 import React, { useEffect, useRef, useState } from 'react';
 import Matter, { World } from 'matter-js';
+import { db } from '@/firebase';
 
 // import Fruit_Data from './fruit-base';
 
@@ -66,6 +67,48 @@ let Fruit_Data = [
     Watermelon,
 ]
 
+const fetchLeaderboard = async () => {
+  try {
+      const leaderboardSnapshot = await db.collection('leaderboard').get();
+      const data = leaderboardSnapshot.docs.map(doc => doc.data());
+      return data;
+  } catch (error) {
+      console.log('Error fetching leaderboard data:', error);
+      return null;
+  }
+}
+
+const updateValueInFirestore = async (documentId: string, fieldToUpdate: string, newValue: number) => {
+  try {
+    const docRef = db.collection("leaderboard").doc(documentId);
+    
+    // Update the specified field
+    await docRef.update({
+      [fieldToUpdate]: newValue,
+    });
+
+    console.log(`Document ${documentId} updated successfully.`);
+  } catch (error) {
+    console.error("Error updating document: ", error);
+    throw error;
+  }
+};
+
+const updateLeaderboard = async (score: number) => {
+  let data = await fetchLeaderboard();
+  console.log(score);
+  if (data) {
+    const scores = data.map((doc:any) => doc.score);
+
+    let finalScores = scores.concat([score]);
+    finalScores.sort().reverse();
+    // console.log(finalScores);
+
+    updateValueInFirestore("rank1", "score", finalScores[0]);
+    updateValueInFirestore("rank2", "score", finalScores[1]);
+    updateValueInFirestore("rank3", "score", finalScores[2]);
+  }
+}
 
 const GameArea = () => {
   const score = useRef(0);
@@ -218,6 +261,8 @@ const GameArea = () => {
 
           Matter.World.clear(engine.world, true);
           Matter.Engine.clear(engine);
+
+          updateLeaderboard(score.current);
 
         }
 
