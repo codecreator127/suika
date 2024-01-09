@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "next build && gh-pages -d .next"
   },
   "dependencies": {
     "firebase": "^10.7.1",
