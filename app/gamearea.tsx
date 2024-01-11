@@ -102,7 +102,7 @@ const updateLeaderboard = async (score: number) => {
     const scores = data.map((doc:any) => doc.score);
 
     let finalScores = scores.concat([score]);
-    finalScores.sort().reverse();
+    finalScores.sort((a, b) => b - a);
     // console.log(finalScores);
 
     updateValueInFirestore("rank1", "score", finalScores[0]);
@@ -114,6 +114,7 @@ const updateLeaderboard = async (score: number) => {
 const GameArea = () => {
   const score = useRef(0);
   useEffect(() => {
+    // updateLeaderboard(800);
     
     // initial set up
     const engine = Matter.Engine.create();
