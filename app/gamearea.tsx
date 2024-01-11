@@ -174,16 +174,47 @@ const GameArea = () => {
     };
     
     // chance of bigger fruit spawning, change to correlate to score later
-    let fruit_multiplier = 1;
+    let fruit_multiplier = 4;
+    let currentFruitBody: Matter.Body | null = null;
 
-    function addFruit(x:number, y: number, fruit_index: number) {
-      let fruitIndex = Math.floor(Math.random() * fruit_multiplier)
-      if (fruit_index != -1) {
-        fruitIndex = fruit_index
-      }
+    // function to allow fruit to sit in the sky
+    function spawnFruit(fruit: any) {
+      const game_fruit = Matter.Bodies.circle(300, FruitSpawnHeight, fruit.radius, {
+        isSleeping: true, // sit in the sky until click
+        collisionFilter: {
+          category: 0x0001,
+          mask: 0x0001,
+        },
+        render: {
+          sprite: {
+            xScale: 1,
+            yScale: 1,
+            texture: fruit.image_url.src // set texture here
+          }
+        }
+      });
+      
+      loadImage(
+        fruit.image_url.src,
+        () => {
+          console.log("Success");
+          Matter.World.add(engine.world, game_fruit);
+        },
+        () => {
+          console.log("Error  Loading ");
+        }
+      );
+      currentFruitBody = game_fruit;
+      
+    }
+
+    // spawn the initial fruit
+    spawnFruit(Cherries);
+
+    function mergeFruit(x:number, y: number, fruit_index: number) {
 
       // import image
-      const fruit = Fruit_Data[fruitIndex];
+      const fruit = Fruit_Data[fruit_index];
       // console.log(fruit);
 
       const game_fruit = Matter.Bodies.circle(x, y, fruit.radius, {
@@ -237,13 +268,34 @@ const GameArea = () => {
     // Add the mouse constraint to the world
     Matter.World.add(engine.world, mouseConstraint);
 
+
+     
     // Listen for mouse clicks
-    Matter.Events.on(mouseConstraint, 'mousedown', (event) => {
+    let isClickAllowed = true;
+
+    Matter.Events.on(mouseConstraint, 'mousedown', async (event) => {
+      // Check if the mouse action is allowed
+      if (!isClickAllowed) return;
+      
       // Handle mouse click event here
       console.log('Mouse clicked at:', event.mouse.position);
-
-      addFruit(event.mouse.position.x, FruitSpawnHeight, -1)
       
+      //  addFruit(event.mouse.position.x, FruitSpawnHeight, -1);
+      currentFruitBody.isSleeping = false;
+      Matter.Body.setPosition(currentFruitBody, {x: event.mouse.position.x, y: FruitSpawnHeight});
+
+      let fruitIndex = Math.floor(Math.random() * fruit_multiplier)
+
+      // import image
+      const fruit = Fruit_Data[fruitIndex];
+      
+      // Disallow the mouse action and re-allow it after 1 second
+      isClickAllowed = false;
+      setTimeout(() => {
+          isClickAllowed = true;
+          spawnFruit(fruit);
+
+      }, 1000);
     });
 
     // collisions
@@ -291,7 +343,7 @@ const GameArea = () => {
           console.log(score);
           // console.log(collision.bodyA.position.x);
 
-          addFruit(collision.bodyA.position.x, collision.bodyA.position.y, newFruitIndex);
+          mergeFruit(collision.bodyA.position.x, collision.bodyA.position.y, newFruitIndex);
         }
 
       })
