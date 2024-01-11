@@ -39,6 +39,7 @@ class Fruit {
   }
   
   const FruitSpawnHeight = 100;
+  const FruitSpawnX = 225;
   const WatermelonRadius = WatermelonImage.height/4;
   const Cherries = new Fruit("Cherry", 2, CherryImage, CherryImage.width/4, 0);
   const Strawberry = new Fruit("Strawberry", 4, StrawberryImage, StrawberryImage.width/4, 1);
@@ -179,7 +180,7 @@ const GameArea = () => {
 
     // function to allow fruit to sit in the sky
     function spawnFruit(fruit: any) {
-      const game_fruit = Matter.Bodies.circle(300, FruitSpawnHeight, fruit.radius, {
+      const game_fruit = Matter.Bodies.circle(FruitSpawnX, FruitSpawnHeight, fruit.radius, {
         isSleeping: true, // sit in the sky until click
         collisionFilter: {
           category: 0x0001,
@@ -187,8 +188,8 @@ const GameArea = () => {
         },
         render: {
           sprite: {
-            xScale: 1,
-            yScale: 1,
+            xScale: 0.5,
+            yScale: 0.5,
             texture: fruit.image_url.src // set texture here
           }
         }
