@@ -299,7 +299,7 @@ const GameArea = () => {
           isClickAllowed = true;
           spawnFruit(fruit);
 
-      }, 1000);
+      }, 300);
     });
 
     // collisions
