@@ -282,8 +282,10 @@ const GameArea = () => {
       console.log('Mouse clicked at:', event.mouse.position);
       
       //  addFruit(event.mouse.position.x, FruitSpawnHeight, -1);
-      currentFruitBody.isSleeping = false;
-      Matter.Body.setPosition(currentFruitBody, {x: event.mouse.position.x, y: FruitSpawnHeight});
+      if (currentFruitBody) {
+        currentFruitBody.isSleeping = false;
+        Matter.Body.setPosition(currentFruitBody, {x: event.mouse.position.x, y: FruitSpawnHeight});
+      }
 
       let fruitIndex = Math.floor(Math.random() * fruit_multiplier)
 
