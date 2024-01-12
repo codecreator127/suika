@@ -103,7 +103,7 @@ const updateLeaderboard = async (score: number) => {
     const scores = data.map((doc:any) => doc.score);
 
     let finalScores = scores.concat([score]);
-    finalScores.sort().reverse();
+    finalScores.sort((a, b) => b - a);
     // console.log(finalScores);
 
     updateValueInFirestore("rank1", "score", finalScores[0]);
@@ -117,6 +117,7 @@ const GameArea = () => {
 
   useEffect(() => {
     let finalScore = 0;
+
     // initial set up
     const engine = Matter.Engine.create();
 
@@ -300,7 +301,7 @@ const GameArea = () => {
           isClickAllowed = true;
           spawnFruit(fruit);
 
-      }, 1000);
+      }, 500);
     });
 
     // collisions
