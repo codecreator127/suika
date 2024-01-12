@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Matter, { World } from 'matter-js';
 import { db } from '@/firebase';
-import Score from './Score'; // Import the Score component
+import Score from './score'; // Import the Score component
 
 // import Fruit_Data from './fruit-base';
 
