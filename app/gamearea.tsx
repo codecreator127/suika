@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Matter, { World } from 'matter-js';
 import { db } from '@/firebase';
+import Score from './Score'; // Import the Score component
 
 // import Fruit_Data from './fruit-base';
 
@@ -112,10 +113,11 @@ const updateLeaderboard = async (score: number) => {
 }
 
 const GameArea = () => {
-  const score = useRef(0);
+  const [currentScore, setCurrentScore] = useState(0);
+
   useEffect(() => {
-    // updateLeaderboard(800);
-    
+    let finalScore = 0;
+
     // initial set up
     const engine = Matter.Engine.create();
 
@@ -318,7 +320,7 @@ const GameArea = () => {
           Matter.World.clear(engine.world, true);
           Matter.Engine.clear(engine);
 
-          updateLeaderboard(score.current);
+          updateLeaderboard(finalScore);
 
         }
 
@@ -327,7 +329,7 @@ const GameArea = () => {
           let index = 1;
 
           // going to use a dictionary for now to map radius to fruit, probably a better way, but unsure for now
-          console.log(collision.bodyA.circleRadius);
+          // console.log(collision.bodyA.circleRadius);
           for (let i = 0; i < Fruit_Data.length; i ++) {
             if (collision.bodyA.circleRadius == Fruit_Data[i].radius) {
               index = i;
@@ -336,15 +338,19 @@ const GameArea = () => {
 
           Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
           let newFruitIndex = index + 1;
-          score.current += Fruit_Data[index].points;
-          if (score.current >= 4) {
+          
+          setCurrentScore((prevScore) => prevScore + Fruit_Data[index].points);
+
+          finalScore += Fruit_Data[index].points;
+
+          if (finalScore >= 4) {
             fruit_multiplier = 3;
           }
-          if (score.current >= 12) {
+          if (finalScore >= 12) {
             fruit_multiplier = 5;
           }
 
-          console.log(score);
+          // console.log(finalScore);
           // console.log(collision.bodyA.position.x);
 
           mergeFruit(collision.bodyA.position.x, collision.bodyA.position.y, newFruitIndex);
@@ -362,17 +368,16 @@ const GameArea = () => {
       Matter.World.clear(engine.world, true);
       Matter.Engine.clear(engine);
     };
-  }, [score]);
+  }, []);
 
   return (
     <div id="game-container">
       {/* The game area canvas */}
       <div id="game-area" />
 
-      {/* Score - leaving this out for now, updating score causes rerendering issues */}
-      {/* <div style={{ position: 'absolute', top: '0%', left: '10%', transform: 'translate(-50%, -50%)'}}>
-        <p>Score: {score.current}</p>
-      </div> */}
+
+      {/* Use the Score component without causing rerenders */}
+      <Score score={currentScore} />
     </div>
   );
 };
