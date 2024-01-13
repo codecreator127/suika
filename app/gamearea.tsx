@@ -184,9 +184,10 @@ const GameArea = () => {
     // function to allow fruit to sit in the sky
     function spawnFruit(fruit: any) {
       const game_fruit = Matter.Bodies.circle(FruitSpawnX, FruitSpawnHeight, fruit.radius, {
+        restitution: 0.2,
         isSleeping: true, // sit in the sky until click
         collisionFilter: {
-          category: 0x0001,
+          category: 0x0000,
           mask: 0x0001,
         },
         render: {
@@ -214,8 +215,17 @@ const GameArea = () => {
 
     // spawn the initial fruit
     spawnFruit(Cherries);
+    
 
+    let mergeFruitAllowed = false;
     function mergeFruit(x:number, y: number, fruit_index: number) {
+
+
+      let mergeFruitAllowed = false;
+      setTimeout(() => {
+          mergeFruitAllowed = true;
+
+      }, 1000);
 
       // import image
       const fruit = Fruit_Data[fruit_index];
@@ -287,6 +297,7 @@ const GameArea = () => {
       //  addFruit(event.mouse.position.x, FruitSpawnHeight, -1);
       if (currentFruitBody) {
         currentFruitBody.isSleeping = false;
+        currentFruitBody.collisionFilter.category = 0x0001;
         Matter.Body.setPosition(currentFruitBody, {x: event.mouse.position.x, y: FruitSpawnHeight});
       }
 
@@ -324,7 +335,7 @@ const GameArea = () => {
 
         }
 
-        if (collision.bodyA.circleRadius == collision.bodyB.circleRadius) {
+        if (collision.bodyA.circleRadius == collision.bodyB.circleRadius && !collision.bodyA.isSleeping && !collision.bodyB.isSleeping) {
           
           let index = 1;
 
