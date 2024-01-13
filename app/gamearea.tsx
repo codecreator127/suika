@@ -39,7 +39,8 @@ class Fruit {
     }
   }
   
-  const FruitSpawnHeight = 100;
+  const FruitSpawnHeight = 150;
+  const FruitDisplayHeight = FruitSpawnHeight - 90;
   const FruitSpawnX = 225;
   const WatermelonRadius = WatermelonImage.height/4;
   const Cherries = new Fruit("Cherry", 2, CherryImage, CherryImage.width/4, 0);
@@ -132,7 +133,7 @@ const GameArea = () => {
       render: {fillStyle: "#E6B143"}
     });
   
-    const topLine = Matter.Bodies.rectangle(310, 50, 620, 2,{
+    const topLine = Matter.Bodies.rectangle(310, 100, 620, 2,{
       // name: "topLine",
       isStatic: true,
 
@@ -183,7 +184,7 @@ const GameArea = () => {
 
     // function to allow fruit to sit in the sky
     function spawnFruit(fruit: any) {
-      const game_fruit = Matter.Bodies.circle(FruitSpawnX, FruitSpawnHeight, fruit.radius, {
+      const game_fruit = Matter.Bodies.circle(FruitSpawnX, FruitDisplayHeight, fruit.radius, {
         restitution: 0.2,
         isSleeping: true, // sit in the sky until click
         collisionFilter: {
@@ -288,14 +289,19 @@ const GameArea = () => {
     // Listen for mouse clicks
     let isClickAllowed = true;
 
-    Matter.Events.on(mouseConstraint, 'mousedown', async (event) => {
+    Matter.Events.on(mouseConstraint, 'mousemove', async (event) => {
+      
+      if (currentFruitBody) {
+        Matter.Body.setPosition(currentFruitBody, {x: event.mouse.position.x, y: FruitDisplayHeight});
+      }
+
+      
+    });
+
+    Matter.Events.on(mouseConstraint, 'mousedown',async (event) => {
       // Check if the mouse action is allowed
       if (!isClickAllowed) return;
-      
-      // Handle mouse click event here
-      console.log('Mouse clicked at:', event.mouse.position);
-      
-      //  addFruit(event.mouse.position.x, FruitSpawnHeight, -1);
+
       if (currentFruitBody) {
         currentFruitBody.isSleeping = false;
         currentFruitBody.collisionFilter.category = 0x0001;
@@ -307,7 +313,8 @@ const GameArea = () => {
       // import image
       const fruit = Fruit_Data[fruitIndex];
       // const fruit = Fruit_Data[7];
-      
+      currentFruitBody = null;
+
       // Disallow the mouse action and re-allow it after 1 second
       isClickAllowed = false;
       setTimeout(() => {
@@ -315,7 +322,9 @@ const GameArea = () => {
           spawnFruit(fruit);
 
       }, 300);
-    });
+
+
+    })
 
     // collisions
     Matter.Events.on(engine, "collisionStart", (event) => {
