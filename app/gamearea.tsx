@@ -51,7 +51,7 @@ class Fruit {
   const Pear = new Fruit("Pear", 14, PearImage, PearImage.width/4, 6);
   const Peach = new Fruit("Peach", 16, PeachImage, PeachImage.width/4, 7);
   const Pineapple = new Fruit("Pineapple", 18, PineappleImage, PineappleImage.width/4, 8);
-  const Melon = new Fruit("Melon", 20, MelonImage, MelonImage.width/4, 9);
+  const Melon = new Fruit("Melon", 20, MelonImage, MelonImage.width/4 + 1, 9);
   const Watermelon = new Fruit("Watermelon", 20, WatermelonImage, WatermelonImage.width/4, 10);
 
 
@@ -215,6 +215,7 @@ const GameArea = () => {
 
     // spawn the initial fruit
     spawnFruit(Cherries);
+    // spawnFruit(Fruit_Data[7]);
     
 
     let mergeFruitAllowed = false;
@@ -305,6 +306,7 @@ const GameArea = () => {
 
       // import image
       const fruit = Fruit_Data[fruitIndex];
+      // const fruit = Fruit_Data[7];
       
       // Disallow the mouse action and re-allow it after 1 second
       isClickAllowed = false;
@@ -312,7 +314,7 @@ const GameArea = () => {
           isClickAllowed = true;
           spawnFruit(fruit);
 
-      }, 500);
+      }, 300);
     });
 
     // collisions
@@ -322,6 +324,7 @@ const GameArea = () => {
         // remove from world if watermelon
         if (collision.bodyA.circleRadius == collision.bodyB.circleRadius && collision.bodyA.circleRadius == WatermelonRadius) {
           Matter.World.remove(engine.world, [collision.bodyA, collision.bodyB]);
+          setCurrentScore((prevScore) => prevScore + Fruit_Data[10].points);
         }
 
         // end game if collision with the top sensor
