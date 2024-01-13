@@ -332,6 +332,8 @@ const GameArea = () => {
           Matter.Engine.clear(engine);
 
           updateLeaderboard(finalScore);
+          setCurrentScore(0);
+          finalScore = 0;
 
         }
 
